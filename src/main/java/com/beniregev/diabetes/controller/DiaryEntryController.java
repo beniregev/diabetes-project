@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-@RequestMapping("/api/")
+@RequestMapping("/api")
 @RestController
 public class DiaryEntryController {
 
@@ -85,6 +85,12 @@ public class DiaryEntryController {
                 .measurement(MeasurementEnum.mapValues.get(when.toLowerCase()))
                 .result(count)
                 .build();
+        DiaryEntryDto created = diaryEntryService.create(diaryEntryPostRequest);
+        return new ResponseEntity<>(created, getHttpStatus(created));
+    }
+
+    @PostMapping("/v1/diary")
+    public ResponseEntity<DiaryEntryDto> createDiaryEntry(@RequestBody DiaryEntryPostRequest diaryEntryPostRequest) {
         DiaryEntryDto created = diaryEntryService.create(diaryEntryPostRequest);
         return new ResponseEntity<>(created, getHttpStatus(created));
     }
