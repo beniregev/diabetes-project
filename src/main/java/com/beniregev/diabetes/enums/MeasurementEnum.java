@@ -30,4 +30,8 @@ public enum MeasurementEnum {
         this.defaultTime = defaultTime;
         this.description = description;
     }
+
+    public LocalTime getDefaultTime() {
+        return defaultTime;
+    }
 }
