@@ -3,6 +3,8 @@ package com.beniregev.diabetes.service;
 import com.beniregev.diabetes.dtos.DiaryEntryDto;
 import com.beniregev.diabetes.dtos.DiaryEntryPostRequest;
 import com.beniregev.diabetes.model.DiaryEntry;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -17,5 +19,7 @@ public interface DiaryEntryService {
     Map<String, String> getMapNameDescription();
     String getMeasurementDescriptionByName(final String when);
     DiaryEntryDto create(DiaryEntryPostRequest diaryEntryPostRequest);
+    List<DiaryEntryDto> create(List<DiaryEntryPostRequest> listDiaryEntriesPostRequest);
+    List<DiaryEntryDto> create(LocalDate defaultDate, List<DiaryEntryPostRequest> listDiaryEntriesPostRequest);
     void deleteAll();
 }
