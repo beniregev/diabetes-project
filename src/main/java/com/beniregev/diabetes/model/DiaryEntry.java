@@ -20,10 +20,18 @@ public class DiaryEntry {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(nullable = false)
     private LocalDateTime dateTime;
+    @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private MeasurementEnum measurement;
     private int result;
+
+    public DiaryEntry(LocalDateTime dateTime, MeasurementEnum measurement, int result) {
+        this.dateTime = dateTime;
+        this.measurement = measurement;
+        this.result = result;
+    }
 
     @Override
     public boolean equals(Object o) {
