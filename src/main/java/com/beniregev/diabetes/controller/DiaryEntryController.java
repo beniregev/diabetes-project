@@ -135,7 +135,9 @@ public class DiaryEntryController {
      *         "result": 99
      *     }
      * ]
-     * @param localDate value of {@link LocalDate} in which to create all the {@code DiaryEntry} instances in the {@link List}.
+     * @param localDate value of {@link LocalDate} in which to create all the {@code DiaryEntry} instances in the
+     *                  {@link List}. example value: 2022-12-16
+     *                  {@code http(s)://domain-host:port/api/v1/diary/2022-12-16}
      * @param listDiaryEntriesPostRequest {@link List} of {@link DiaryEntryPostRequest}s to be created in the database.
      *                                                In this request the value of {@link DiaryEntryPostRequest} in each
      *                                                instance will be replaced by the combination of {@code localDate}
@@ -206,6 +208,10 @@ public class DiaryEntryController {
      */
     @PostMapping("/v1/diary")
     public ResponseEntity<List<DiaryEntryDto>> createDiaryEntry(@RequestBody List<DiaryEntryPostRequest> listDiaryEntriesPostRequest) {
+        if (atLeastOneDiaryEntryPostRequestIsNull(listDiaryEntriesPostRequest))
+            return new ResponseEntity<>(
+                    DiaryEntryMapper.INSTANCE.listDiaryEntryPostRequestToListDiaryEntryDto(listDiaryEntriesPostRequest),
+                    HttpStatus.UNPROCESSABLE_ENTITY);
         List<DiaryEntryDto> created = diaryEntryService.create(listDiaryEntriesPostRequest);
         return new ResponseEntity<>(created, getHttpStatus(created));
     }
@@ -237,6 +243,11 @@ public class DiaryEntryController {
         if (list == null) return HttpStatus.NOT_FOUND;
         if (list.isEmpty()) return HttpStatus.NO_CONTENT;
         return HttpStatus.OK;
+    }
+
+    private boolean atLeastOneDiaryEntryPostRequestIsNull(List<DiaryEntryPostRequest> listDiaryEntriesPostRequest) {
+        return listDiaryEntriesPostRequest.stream()
+                .anyMatch(x -> x.getDateTime() == null || x.getMeasurement() == null || x.getResult() < 50);
     }
 
 }
